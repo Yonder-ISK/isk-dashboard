@@ -89,3 +89,80 @@
             <div class="overlay"></div>
             <div class="kaart-inhoud">
                 <div class="ring-wrapper">
+                    <canvas id="ring-schoolse" width="110" height="110"></canvas>
+                    <div class="ring-tekst"><span class="pct" id="pct-schoolse">0%</span></div>
+                </div>
+                <div class="kaart-titel">Schoolse vaardigheden</div>
+            </div>
+        </div>
+
+        <div class="kaart docent-only">
+            <img class="foto" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=80" alt="Inzet en gedrag">
+            <div class="overlay"></div>
+            <div class="kaart-inhoud">
+                <div class="ring-wrapper">
+                    <canvas id="ring-gedrag" width="110" height="110"></canvas>
+                    <div class="ring-tekst"><span class="pct" id="pct-gedrag">0%</span></div>
+                </div>
+                <div class="kaart-titel">Inzet & gedrag</div>
+                <div class="docent-badge">Alleen docent</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="status-balk">
+        <div class="status-item"><div class="status-bol" style="background:#ef4444"></div> Herhalen (onder 70%)</div>
+        <div class="status-item"><div class="status-bol" style="background:#f59e0b"></div> In ontwikkeling (70–79%)</div>
+        <div class="status-item"><div class="status-bol" style="background:#22c55e"></div> Beheerst (80% of meer)</div>
+    </div>
+
+    <script>
+        var data = [
+            {id:'lezen',     pct:70},
+            {id:'schrijven', pct:45},
+            {id:'grammatica',pct:85},
+            {id:'schoolse',  pct:60},
+            {id:'gedrag',    pct:75}
+        ];
+
+        function kleur(p){
+            if(p>=80) return '#22c55e';
+            if(p>=70) return '#f59e0b';
+            return '#ef4444';
+        }
+
+        function teken(id, pct){
+            var c = document.getElementById('ring-'+id);
+            if(!c) return;
+            var x = c.getContext('2d');
+            var r=44, d=10, cx=55, cy=55;
+            x.clearRect(0,0,110,110);
+            x.beginPath();
+            x.arc(cx,cy,r,0,2*Math.PI);
+            x.strokeStyle='rgba(255,255,255,0.25)';
+            x.lineWidth=d;
+            x.stroke();
+            if(pct>0){
+                x.beginPath();
+                x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+(2*Math.PI*pct/100));
+                x.strokeStyle=kleur(pct);
+                x.lineWidth=d;
+                x.lineCap='round';
+                x.stroke();
+            }
+            var el = document.getElementById('pct-'+id);
+            if(el) el.textContent = pct+'%';
+        }
+
+        function kies(d){
+            alert('Je hebt gekozen: '+d+'\nDe oefeningen komen hier binnenkort!');
+        }
+
+        window.addEventListener('load', function(){
+            data.forEach(function(d){ teken(d.id, d.pct); });
+        });
+    </script>
+
+</body>
+</html>
