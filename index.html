@@ -3,247 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISK Leerpad</title>
+    <title>Ontwikkeling Nederlands</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f0f4f8;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .dashboard {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: #2d3748;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-
-        .welkom {
-            color: #4a5568;
-            font-size: 1.1rem;
-        }
-
-        .diagrammen-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .diagram-kaart {
-            background: #f7fafc;
-            border-radius: 16px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid #e2e8f0;
-        }
-
-        .diagram-kaart:hover {
-            transform: translateY(-3px);
-            border-color: #4299e1;
-            background: #ebf8ff;
-        }
-
-        .diagram-kaart.docent-only {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .diagram-kaart.docent-only:hover {
-            transform: none;
-            border-color: #e2e8f0;
-            background: #f7fafc;
-        }
-
-        .ring-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 10px;
-        }
-
-        .ring-wrapper canvas {
-            width: 100px;
-            height: 100px;
-        }
-
-        .ring-tekst {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .ring-tekst span {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #2d3748;
-        }
-
-        .diagram-label {
-            font-size: 0.85rem;
-            color: #4a5568;
-            font-weight: 600;
-            margin-top: 6px;
-        }
-
-        .diagram-icoon {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-
-        .docent-label {
-            font-size: 0.7rem;
-            color: #a0aec0;
-            margin-top: 4px;
-        }
-
-        @media (max-width: 480px) {
-            .diagrammen-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .dashboard {
-                padding: 20px;
-            }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a2e1a 0%,#0f4a2a 40%,#1a6b3a 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:30px 20px}
+        .top-bar{width:100%;max-width:1400px;display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+        .logo{color:#7fffa0;font-size:1.4rem;font-weight:700;letter-spacing:1px}
+        .leerling-naam{color:white;font-size:1rem;opacity:0.85}
+        .welkom-blok{width:100%;max-width:1400px;margin-bottom:30px}
+        .welkom-blok h1{color:white;font-size:2.2rem;font-weight:700;margin-bottom:6px}
+        .welkom-blok p{color:#a8f0c0;font-size:1.1rem}
+        .kaarten-rij{width:100%;max-width:1400px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:30px}
+        .kaart{border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.25s;position:relative;height:240px;border:1px solid rgba(255,255,255,0.15)}
+        .kaart:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.4)}
+        .kaart.docent-only{cursor:not-allowed;opacity:0.5}
+        .kaart.docent-only:hover{transform:none;box-shadow:none}
+        .foto{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+        .overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.7) 100%)}
+        .kaart-inhoud{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+        .ring-wrapper{position:relative;width:110px;height:110px;margin-bottom:10px}
+        .ring-wrapper canvas{width:110px;height:110px}
+        .ring-tekst{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+        .ring-tekst .pct{font-size:1.3rem;font-weight:700;color:white;display:block;text-shadow:0 1px 4px rgba(0,0,0,0.6)}
+        .kaart-titel{color:white;font-size:0.9rem;font-weight:600;text-align:center;text-shadow:0 1px 4px rgba(0,0,0,0.6)}
+        .docent-badge{font-size:0.7rem;color:#7fffa0;margin-top:6px;text-align:center}
+        .status-balk{width:100%;max-width:1400px;background:rgba(255,255,255,0.06);border-radius:16px;padding:20px 28px;display:flex;gap:30px;align-items:center;border:1px solid rgba(255,255,255,0.1);flex-wrap:wrap}
+        .status-item{display:flex;align-items:center;gap:10px;color:white;font-size:0.9rem}
+        .status-bol{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+        @media(max-width:900px){.kaarten-rij{grid-template-columns:repeat(2,1fr)}.kaart:last-child{grid-column:span 2}}
+        @media(max-width:480px){.kaarten-rij{grid-template-columns:1fr}.kaart:last-child{grid-column:span 1}}
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="header">
-            <h1>📚 ISK Leerpad</h1>
-            <p class="welkom">Welkom, <strong>Ahmed</strong></p>
-        </div>
 
-        <div class="diagrammen-grid">
-            <div class="diagram-kaart" onclick="kiesDomein('lezen')">
-                <div class="diagram-icoon">📖</div>
-                <div class="ring-wrapper">
-                    <canvas id="ring-lezen" width="100" height="100"></canvas>
-                    <div class="ring-tekst"><span id="pct-lezen">0%</span></div>
-                </div>
-                <div class="diagram-label">Lezen</div>
-            </div>
-
-            <div class="diagram-kaart" onclick="kiesDomein('schrijven')">
-                <div class="diagram-icoon">✏️</div>
-                <div class="ring-wrapper">
-                    <canvas id="ring-schrijven" width="100" height="100"></canvas>
-                    <div class="ring-tekst"><span id="pct-schrijven">0%</span></div>
-                </div>
-                <div class="diagram-label">Schrijven</div>
-            </div>
-
-            <div class="diagram-kaart" onclick="kiesDomein('grammatica')">
-                <div class="diagram-icoon">🔤</div>
-                <div class="ring-wrapper">
-                    <canvas id="ring-grammatica" width="100" height="100"></canvas>
-                    <div class="ring-tekst"><span id="pct-grammatica">0%</span></div>
-                </div>
-                <div class="diagram-label">Grammatica</div>
-            </div>
-
-            <div class="diagram-kaart" onclick="kiesDomein('schoolse-vaardigheden')">
-                <div class="diagram-icoon">🎒</div>
-                <div class="ring-wrapper">
-                    <canvas id="ring-schoolse" width="100" height="100"></canvas>
-                    <div class="ring-tekst"><span id="pct-schoolse">0%</span></div>
-                </div>
-                <div class="diagram-label">Schoolse vaardigheden</div>
-            </div>
-
-            <div class="diagram-kaart docent-only">
-                <div class="diagram-icoon">⭐</div>
-                <div class="ring-wrapper">
-                    <canvas id="ring-gedrag" width="100" height="100"></canvas>
-                    <div class="ring-tekst"><span id="pct-gedrag">0%</span></div>
-                </div>
-                <div class="diagram-label">Inzet & gedrag</div>
-                <div class="docent-label">Alleen docent</div>
-            </div>
-        </div>
+    <div class="top-bar">
+        <div class="logo">🌱 Yonder ISK</div>
+        <div class="leerling-naam">Ingelogd als: <strong>Ahmed El Fassi</strong></div>
     </div>
 
-    <script>
-        var domeinen = [
-            { id: 'lezen',     percentage: 70 },
-            { id: 'schrijven', percentage: 45 },
-            { id: 'grammatica', percentage: 85 },
-            { id: 'schoolse',  percentage: 60 },
-            { id: 'gedrag',    percentage: 75 }
-        ];
+    <div class="welkom-blok">
+        <h1>Ontwikkeling Nederlands</h1>
+        <p>Klik op een onderdeel om te oefenen.</p>
+    </div>
 
-        function getKleur(pct) {
-            if (pct >= 80) return '#48bb78';
-            if (pct >= 70) return '#ecc94b';
-            if (pct >= 50) return '#ed8936';
-            return '#fc8181';
-        }
+    <div class="kaarten-rij">
 
-        function tekenRing(id, pct) {
-            var canvas = document.getElementById('ring-' + id);
-            if (!canvas) return;
-            var ctx = canvas.getContext('2d');
-            var cx = 50;
-            var cy = 50;
-            var straal = 38;
-            var dikte = 10;
+        <div class="kaart" onclick="kies('lezen')">
+            <img class="foto" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80" alt="Lezen">
+            <div class="overlay"></div>
+            <div class="kaart-inhoud">
+                <div class="ring-wrapper">
+                    <canvas id="ring-lezen" width="110" height="110"></canvas>
+                    <div class="ring-tekst"><span class="pct" id="pct-lezen">0%</span></div>
+                </div>
+                <div class="kaart-titel">Lezen</div>
+            </div>
+        </div>
 
-            ctx.clearRect(0, 0, 100, 100);
+        <div class="kaart" onclick="kies('schrijven')">
+            <img class="foto" src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&q=80" alt="Schrijven">
+            <div class="overlay"></div>
+            <div class="kaart-inhoud">
+                <div class="ring-wrapper">
+                    <canvas id="ring-schrijven" width="110" height="110"></canvas>
+                    <div class="ring-tekst"><span class="pct" id="pct-schrijven">0%</span></div>
+                </div>
+                <div class="kaart-titel">Schrijven</div>
+            </div>
+        </div>
 
-            ctx.beginPath();
-            ctx.arc(cx, cy, straal, 0, 2 * Math.PI);
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = dikte;
-            ctx.stroke();
+        <div class="kaart" onclick="kies('grammatica')">
+            <img class="foto" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80" alt="Grammatica">
+            <div class="overlay"></div>
+            <div class="kaart-inhoud">
+                <div class="ring-wrapper">
+                    <canvas id="ring-grammatica" width="110" height="110"></canvas>
+                    <div class="ring-tekst"><span class="pct" id="pct-grammatica">0%</span></div>
+                </div>
+                <div class="kaart-titel">Grammatica</div>
+            </div>
+        </div>
 
-            if (pct > 0) {
-                var startHoek = -Math.PI / 2;
-                var eindHoek = startHoek + (2 * Math.PI * pct / 100);
-                ctx.beginPath();
-                ctx.arc(cx, cy, straal, startHoek, eindHoek);
-                ctx.strokeStyle = getKleur(pct);
-                ctx.lineWidth = dikte;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-            }
-
-            var tekstEl = document.getElementById('pct-' + id);
-            if (tekstEl) tekstEl.textContent = pct + '%';
-        }
-
-        function kiesDomein(domein) {
-            alert('Je hebt gekozen: ' + domein + '\nDe oefeningen komen hier binnenkort!');
-        }
-
-        window.addEventListener('load', function() {
-            domeinen.forEach(function(d) {
-                tekenRing(d.id, d.percentage);
-            });
-        });
-    </script>
-</body>
-</html>
+        <div class="kaart" onclick="kies('schoolse')">
+            <img class="foto" src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=400&q=80" alt="Schoolse vaardigheden">
+            <div class="overlay"></div>
+            <div class="kaart-inhoud">
+                <div class="ring-wrapper">
