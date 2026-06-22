@@ -23,7 +23,7 @@
             border-radius: 20px;
             padding: 40px;
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
@@ -38,23 +38,58 @@
             margin-bottom: 5px;
         }
 
-        .header p {
-            color: #718096;
-            font-size: 1rem;
+        .welkom {
+            color: #4a5568;
+            font-size: 1.1rem;
         }
 
-        .ring-container {
-            display: flex;
-            justify-content: center;
+        .diagrammen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
             margin: 30px 0;
+        }
+
+        .diagram-kaart {
+            background: #f7fafc;
+            border-radius: 16px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid #e2e8f0;
+        }
+
+        .diagram-kaart:hover {
+            transform: translateY(-3px);
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .diagram-kaart.docent-only {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .diagram-kaart.docent-only:hover {
+            transform: none;
+            border-color: #e2e8f0;
+            background: #f7fafc;
+        }
+
+        .ring-wrapper {
             position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 10px;
         }
 
-        canvas {
-            max-width: 200px;
+        .ring-wrapper canvas {
+            width: 100px;
+            height: 100px;
         }
 
-        .percentage-text {
+        .ring-tekst {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -62,65 +97,22 @@
             text-align: center;
         }
 
-        .percentage-text span {
-            font-size: 2rem;
+        .ring-tekst span {
+            font-size: 1.1rem;
             font-weight: bold;
             color: #2d3748;
         }
 
-        .percentage-text p {
-            font-size: 0.8rem;
-            color: #718096;
+        .diagram-label {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-weight: 600;
+            margin-top: 6px;
         }
 
-        .domein-titel {
-            text-align: center;
-            color: #718096;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        .keuze-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .keuze-knop {
-            background: #f7fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.95rem;
-            color: #2d3748;
-        }
-
-        .keuze-knop:hover {
-            border-color: #4299e1;
-            background: #ebf8ff;
-            transform: translateY(-2px);
-        }
-
-        .keuze-knop .icoon {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        .keuze-knop.docent-only {
-            border-color: #e2e8f0;
-            color: #a0aec0;
-            cursor: not-allowed;
-            background: #f7fafc;
-        }
-
-        .keuze-knop.docent-only:hover {
-            transform: none;
-            border-color: #e2e8f0;
-            background: #f7fafc;
+        .diagram-icoon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
         }
 
         .docent-label {
@@ -129,11 +121,13 @@
             margin-top: 4px;
         }
 
-        .welkom {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #4a5568;
-            font-size: 1.1rem;
+        @media (max-width: 480px) {
+            .diagrammen-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .dashboard {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -144,85 +138,11 @@
             <p class="welkom">Welkom, <strong>Ahmed</strong></p>
         </div>
 
-        <div class="ring-container">
-            <canvas id="ringDiagram" width="200" height="200"></canvas>
-            <div class="percentage-text">
-                <span id="percentageTekst">70%</span>
-                <p>behaald</p>
-            </div>
-        </div>
-
-        <p class="domein-titel">Kies een onderdeel om aan te werken:</p>
-
-        <div class="keuze-grid">
-            <div class="keuze-knop" onclick="kiesdomein('lezen')">
-                <div class="icoon">📖</div>
-                Lezen
-            </div>
-            <div class="keuze-knop" onclick="kiesdomein('schrijven')">
-                <div class="icoon">✏️</div>
-                Schrijven
-            </div>
-            <div class="keuze-knop" onclick="kiesdomein('grammatica')">
-                <div class="icoon">🔤</div>
-                Grammatica
-            </div>
-            <div class="keuze-knop" onclick="kiesdomein('schoolse-vaardigheden')">
-                <div class="icoon">🎒</div>
-                Schoolse vaardigheden
-            </div>
-            <div class="keuze-knop docent-only">
-                <div class="icoon">⭐</div>
-                Inzet & gedrag
-                <div class="docent-label">Alleen docent</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const percentage = 70;
-
-        function getKleur(pct) {
-            if (pct >= 80) return '#48bb78';
-            if (pct >= 70) return '#ecc94b';
-            if (pct >= 50) return '#ed8936';
-            return '#fc8181';
-        }
-
-        function tekenRing(pct) {
-            const canvas = document.getElementById('ringDiagram');
-            const ctx = canvas.getContext('2d');
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const straal = 80;
-            const dikte = 20;
-            const kleur = getKleur(pct);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Grijze achtergrondring
-            ctx.beginPath();
-            ctx.arc(cx, cy, straal, 0, 2 * Math.PI);
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = dikte;
-            ctx.stroke();
-
-            // Gekleurde voortgangsring
-            const startHoek = -Math.PI / 2;
-            const eindHoek = startHoek + (2 * Math.PI * pct / 100);
-            ctx.beginPath();
-            ctx.arc(cx, cy, straal, startHoek, eindHoek);
-            ctx.strokeStyle = kleur;
-            ctx.lineWidth = dikte;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-        }
-
-        function kiesdomein(domein) {
-            alert('Je hebt gekozen: ' + domein + '\nDe oefeningen komen hier binnenkort!');
-        }
-
-        tekenRing(percentage);
-    </script>
-</body>
-</html>
+        <div class="diagrammen-grid">
+            <div class="diagram-kaart" onclick="kiesDomein('lezen')">
+                <div class="diagram-icoon">📖</div>
+                <div class="ring-wrapper">
+                    <canvas id="ring-lezen" width="100" height="100"></canvas>
+                    <div class="ring-tekst"><span id="pct-lezen">0%</span></div>
+                </div>
+                <div class="diagram-label">Lezen</div>
