@@ -112,7 +112,7 @@
 
         .diagram-icoon {
             font-size: 1.3rem;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .docent-label {
@@ -146,3 +146,104 @@
                     <div class="ring-tekst"><span id="pct-lezen">0%</span></div>
                 </div>
                 <div class="diagram-label">Lezen</div>
+            </div>
+
+            <div class="diagram-kaart" onclick="kiesDomein('schrijven')">
+                <div class="diagram-icoon">✏️</div>
+                <div class="ring-wrapper">
+                    <canvas id="ring-schrijven" width="100" height="100"></canvas>
+                    <div class="ring-tekst"><span id="pct-schrijven">0%</span></div>
+                </div>
+                <div class="diagram-label">Schrijven</div>
+            </div>
+
+            <div class="diagram-kaart" onclick="kiesDomein('grammatica')">
+                <div class="diagram-icoon">🔤</div>
+                <div class="ring-wrapper">
+                    <canvas id="ring-grammatica" width="100" height="100"></canvas>
+                    <div class="ring-tekst"><span id="pct-grammatica">0%</span></div>
+                </div>
+                <div class="diagram-label">Grammatica</div>
+            </div>
+
+            <div class="diagram-kaart" onclick="kiesDomein('schoolse-vaardigheden')">
+                <div class="diagram-icoon">🎒</div>
+                <div class="ring-wrapper">
+                    <canvas id="ring-schoolse" width="100" height="100"></canvas>
+                    <div class="ring-tekst"><span id="pct-schoolse">0%</span></div>
+                </div>
+                <div class="diagram-label">Schoolse vaardigheden</div>
+            </div>
+
+            <div class="diagram-kaart docent-only">
+                <div class="diagram-icoon">⭐</div>
+                <div class="ring-wrapper">
+                    <canvas id="ring-gedrag" width="100" height="100"></canvas>
+                    <div class="ring-tekst"><span id="pct-gedrag">0%</span></div>
+                </div>
+                <div class="diagram-label">Inzet & gedrag</div>
+                <div class="docent-label">Alleen docent</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var domeinen = [
+            { id: 'lezen',     percentage: 70 },
+            { id: 'schrijven', percentage: 45 },
+            { id: 'grammatica', percentage: 85 },
+            { id: 'schoolse',  percentage: 60 },
+            { id: 'gedrag',    percentage: 75 }
+        ];
+
+        function getKleur(pct) {
+            if (pct >= 80) return '#48bb78';
+            if (pct >= 70) return '#ecc94b';
+            if (pct >= 50) return '#ed8936';
+            return '#fc8181';
+        }
+
+        function tekenRing(id, pct) {
+            var canvas = document.getElementById('ring-' + id);
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var cx = 50;
+            var cy = 50;
+            var straal = 38;
+            var dikte = 10;
+
+            ctx.clearRect(0, 0, 100, 100);
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, straal, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = dikte;
+            ctx.stroke();
+
+            if (pct > 0) {
+                var startHoek = -Math.PI / 2;
+                var eindHoek = startHoek + (2 * Math.PI * pct / 100);
+                ctx.beginPath();
+                ctx.arc(cx, cy, straal, startHoek, eindHoek);
+                ctx.strokeStyle = getKleur(pct);
+                ctx.lineWidth = dikte;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+
+            var tekstEl = document.getElementById('pct-' + id);
+            if (tekstEl) tekstEl.textContent = pct + '%';
+        }
+
+        function kiesDomein(domein) {
+            alert('Je hebt gekozen: ' + domein + '\nDe oefeningen komen hier binnenkort!');
+        }
+
+        window.addEventListener('load', function() {
+            domeinen.forEach(function(d) {
+                tekenRing(d.id, d.percentage);
+            });
+        });
+    </script>
+</body>
+</html>
